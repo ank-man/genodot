@@ -3,7 +3,7 @@
 # The ultimate PAF to dotplot converter for genome synteny analysis
 # Author: Genomics Visualization Suite
 # Version: 3.0.0
-# GitHub: https://github.com/genomics/genodot
+# GitHub: https://github.com/ank-man/genodot
 
 suppressPackageStartupMessages(library(optparse))
 suppressPackageStartupMessages(library(ggplot2))
@@ -199,7 +199,7 @@ option_list <- list(
 
 options(error = traceback)
 parser <- OptionParser(
-  usage = "%prog [options] input.paf\n\nGenoDot - Advanced PAF Dot Plot Visualizer\nFor more information, see https://github.com/genomics/genodot",
+  usage = "%prog [options] input.paf\n\nGenoDot - Advanced PAF Dot Plot Visualizer\nFor more information, see https://github.com/ank-man/genodot",
   option_list = option_list
 )
 opts <- parse_args(parser, positional_arguments = c(0, 1))
@@ -207,7 +207,7 @@ opt  <- opts$options
 
 if (opt$version) {
   cat(paste0(script_name, " version: ", script_version, "\n"))
-  cat("GitHub: https://github.com/genomics/genodot\n")
+  cat("GitHub: https://github.com/ank-man/genodot\n")
   quit(status = 0)
 }
 
@@ -381,13 +381,17 @@ gp <- ggplot(alignments) +
   )
 
 # Color palette selection
-color_scale <- switch(opt$color_palette,
-  "RdYlBu" = scale_color_distiller(palette = "RdYlBu", direction = 1, limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity"),
-  "Viridis" = scale_color_viridis_c(option = "viridis", limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity"),
-  "Plasma" = scale_color_viridis_c(option = "plasma", limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity"),
-  "Heat" = scale_color_gradient(low = "blue", high = "red", limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity"),
-  scale_color_distiller(palette = "RdYlBu", direction = 1, limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity")
-)
+if (opt$color_palette == "RdYlBu") {
+  color_scale <- scale_color_distiller(palette = "RdYlBu", direction = 1, limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity")
+} else if (opt$color_palette == "Viridis") {
+  color_scale <- scale_color_viridis_c(option = "viridis", limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity")
+} else if (opt$color_palette == "Plasma") {
+  color_scale <- scale_color_viridis_c(option = "plasma", limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity")
+} else if (opt$color_palette == "Heat") {
+  color_scale <- scale_color_gradient(low = "blue", high = "red", limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity")
+} else {
+  color_scale <- scale_color_distiller(palette = "RdYlBu", direction = 1, limits = c(ifelse(opt$identity_floor > 0, opt$identity_floor, 0), 1), name = "Identity")
+}
 
 gp <- gp + color_scale
 
@@ -514,4 +518,4 @@ cat(sprintf("\n✓ %s completed successfully!\n", script_name))
 cat(sprintf("Output saved: %s [%s]\n", opt$output_filename, output_formats))
 cat(sprintf("Total alignments: %d | Coverage: %.1f Mb | Avg identity: %.1f%%\n", 
             stats$total_alignments, stats$total_bp_aligned / 1e6, stats$avg_identity))
-cat("GitHub: https://github.com/genomics/genodot\n")
+cat("GitHub: https://github.com/ank-man/genodot\n")
