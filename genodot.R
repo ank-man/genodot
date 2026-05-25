@@ -333,10 +333,11 @@ queryLenAggPerRef <- sapply(levels(alignments$queryID), function(qid)
   tapply(alignments$lenAln[alignments$queryID == qid],
          alignments$refID[ alignments$queryID == qid], sum))
 
-queryID_Ref <- if (length(levels(alignments$refID)) > 1)
+queryID_Ref <- if (length(levels(alignments$refID)) > 1) {
   apply(queryLenAggPerRef, 2, function(x) rownames(queryLenAggPerRef)[which.max(x)])
-else
+} else {
   sapply(queryLenAggPerRef, function(x) names(queryLenAggPerRef)[which.max(x)])
+}
 
 alignments$queryID <- factor(alignments$queryID,
   levels = levels(alignments$queryID)[order(match(queryID_Ref, levels(alignments$refID)))])
@@ -511,8 +512,11 @@ suppressWarnings({
            width = w, height = h, units = "in", dpi = 300, limitsize = FALSE)
 })
 
-output_formats <- if (opt$output_format == "both") "PDF + PNG" 
-                  else toupper(opt$output_format)
+output_formats <- if (opt$output_format == "both") {
+  "PDF + PNG"
+} else {
+  toupper(opt$output_format)
+}
 
 cat(sprintf("\n✓ %s completed successfully!\n", script_name))
 cat(sprintf("Output saved: %s [%s]\n", opt$output_filename, output_formats))
