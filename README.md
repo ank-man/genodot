@@ -1,24 +1,46 @@
-# 🧬 GenoDot - Advanced PAF Dot Plot Visualizer
+# 🧬 GenoDot - Advanced Genome Format Conversion Suite
 
 [![R](https://img.shields.io/badge/R-4.0+-blue.svg)](https://www.r-project.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/genomics/genodot.svg?style=social&label=Star)](https://github.com/genomics/genodot)
-[![GitHub forks](https://img.shields.io/github/forks/genomics/genomics.svg?style=social&label=Fork)](https://github.com/genomics/genodot)
-[![GitHub issues](https://img.shields.io/github/issues/genomics/genodot.svg)](https://github.com/genomics/genodot/issues)
+[![GitHub stars](https://img.shields.io/github/stars/ank-man/genodot.svg?style=social&label=Star)](https://github.com/ank-man/genodot)
+[![GitHub forks](https://img.shields.io/github/forks/ank-man/genodot.svg?style=social&label=Fork)](https://github.com/ank-man/genodot)
+[![GitHub issues](https://img.shields.io/github/issues/ank-man/genodot.svg)](https://github.com/ank-man/genodot/issues)
 
-**GenoDot** is the ultimate **PAF to dotplot converter** for genome synteny analysis and alignment visualization. Transform your **Minimap2** PAF files into stunning, publication-quality dot plots with advanced features and beautiful aesthetics.
+**GenoDot** is the ultimate **genome format conversion suite** for bioinformatics and genomics research. Transform between **PAF, SAM, BED, and chain formats** with powerful visualization tools. Perfect for **Minimap2**, genome alignment analysis, and format conversion workflows.
 
 ## ✨ Key Features
 
-- 🎯 **PAF File Support**: Perfect for Minimap2, minimap2-x, and other genome aligners
-- 📊 **Publication-Quality Plots**: High-resolution PDF, PNG, and SVG output
-- 🎨 **Multiple Color Palettes**: RdYlBu, Viridis, Plasma, and custom gradients
-- 📏 **Smart Filtering**: Filter by alignment length, identity, and coverage
-- 🔄 **Sequence Orientation**: Automatic detection and flipping of reverse complements
-- 📍 **BED Annotations**: Add reference and query annotations with custom colors
-- 📈 **Alignment Statistics**: Comprehensive coverage and identity metrics
-- ⚡ **High Performance**: Optimized for large genome assemblies
-- 🛠️ **Extensive Customization**: 20+ command-line options for perfect plots
+### 🎯 **Format Conversion Tools**
+- **PAF ↔ SAM** bidirectional conversion
+- **PAF ↔ BED** format transformation  
+- **BED → PAF** conversion with sequence length support
+- **Chain → PAF** UCSC chain format support
+- **PAF → Dot Plot** advanced visualization
+
+### 📊 **Visualization & Analysis**
+- **GenoDot**: Advanced PAF dot plot visualizer
+- **Publication-quality plots**: PDF, PNG, SVG output
+- **Multiple color palettes**: RdYlBu, Viridis, Plasma, Heat
+- **BED annotation support**: Reference and query markers
+- **Alignment statistics**: Coverage, identity, quality metrics
+
+### 🚀 **Performance & Features**
+- **High-speed processing**: Optimized for large genomes
+- **Memory efficient**: Handles >10Gb alignments
+- **Flexible filtering**: Length, identity, quality thresholds
+- **Smart coordinate handling**: Automatic strand detection
+- **Comprehensive options**: 50+ customization parameters
+
+## 🛠️ **Conversion Tools Overview**
+
+| Tool | Input | Output | Description |
+|------|-------|--------|-------------|
+| **genodot.R** | PAF | PDF/PNG/SVG | Advanced dot plot visualization |
+| **paf2bed.R** | PAF | BED | Convert alignments to BED format |
+| **paf2sam.R** | PAF | SAM | Transform PAF to SAM format |
+| **sam2paf.R** | SAM | PAF | Convert SAM to PAF format |
+| **bed2paf.R** | BED | PAF | Convert BED regions to PAF |
+| **chain2paf.R** | Chain | PAF | UCSC chain to PAF conversion |
 
 ## 🚀 Quick Start
 
@@ -27,232 +49,228 @@
 ```bash
 # Install required R packages
 R -e "install.packages(c('ggplot2', 'optparse', 'scales', 'RColorBrewer'))"
+
+# Clone the repository
+git clone https://github.com/ank-man/genodot.git
+cd genodot
+chmod +x *.R
 ```
 
-### Basic Usage
+### Basic Usage Examples
 
+#### **PAF to Dot Plot Visualization**
 ```bash
-# Generate a dot plot from your PAF file
+# Generate beautiful dot plot
 ./genodot.R alignments.paf
 
-# With custom output name
-./genodot.R -o my_genome_plot alignments.paf
-
-# High-quality PDF output
-./genodot.R -p 20 -F pdf alignments.paf
+# Advanced visualization with custom settings
+./genodot.R -p 20 -C Viridis -S -t "My Genome Comparison" alignments.paf
 ```
 
-### Advanced Examples
+#### **PAF to BED Conversion**
+```bash
+# Convert PAF to BED format
+./paf2bed.R -i 0.95 -m 10kb alignments.paf
+
+# Reference coordinates only
+./paf2bed.R -r -o reference_coords.bed alignments.paf
+```
+
+#### **PAF to SAM Conversion**
+```bash
+# Convert PAF to SAM with header
+./paf2sam.R -r reference.fasta -o alignments.sam alignments.paf
+
+# Header only (for reference)
+./paf2sam.R -H -o header.sam alignments.paf
+```
+
+#### **SAM to PAF Conversion**
+```bash
+# Convert SAM back to PAF
+./sam2paf.R -m 1kb -q 20 alignments.sam
+
+# Include unmapped reads
+./sam2paf.R -u -o all_alignments.paf alignments.sam
+```
+
+#### **BED to PAF Conversion**
+```bash
+# Convert BED regions to PAF
+./bed2paf.R -r reference.fasta -q query.fasta regions.bed
+
+# With custom settings
+./bed2paf.R -i 0.98 -q 60 -s - regions.bed
+```
+
+#### **Chain to PAF Conversion**
+```bash
+# Convert UCSC chain format
+./chain2paf.R -m 5kb -s 2000 alignments.chain
+
+# Filter by chain score
+./chain2paf.R -s 5000 -o high_quality.paf alignments.chain
+```
+
+## 📋 **Detailed Tool Documentation**
+
+### 🎨 **GenoDot - PAF Dot Plot Visualizer**
+
+**Perfect for:** Minimap2 output visualization, synteny analysis, genome comparison
 
 ```bash
-# Filter for high-quality alignments only
-./genodot.R -c 0.95 -m 50kb -q 1mb alignments.paf
-
-# Add BED annotations and custom title
-./genodot.R -e annotations.bed -E query_annotations.bed -t "My Genome Comparison" alignments.paf
-
-# Use Viridis color palette with statistics
-./genodot.R -C Viridis -S alignments.paf
-
-# Flip reverse complement queries
-./genodot.R -f -b alignments.paf
+./genodot.R [options] input.paf
 ```
 
-## 📋 Command Line Options
+**Key Options:**
+- `-p, --plot-size`: Plot width in inches [15]
+- `-C, --color-palette`: RdYlBu, Viridis, Plasma, Heat [RdYlBu]
+- `-e, --ref-bed`: Reference BED annotations
+- `-E, --query-bed`: Query BED annotations
+- `-f, --flip`: Auto-detect reverse complements
+- `-S, --show-stats`: Display detailed statistics
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-o, --output` | Output filename prefix | input.paf |
-| `-p, --plot-size` | Plot width in inches | 15 |
-| `-f, --flip` | Flip reverse-complement queries | FALSE |
-| `-b, --break-point` | Show alignment break points | FALSE |
-| `-c, --identity-floor` | Min percent identity (0-1) | 0 |
-| `-a, --alpha` | Segment transparency (0-1) | 0.7 |
-| `-w, --line-width` | Segment line width | 0.4 |
-| `-s, --sort-by-refid` | Sort reference IDs alphabetically | FALSE |
-| `-q, --min-query-length` | Min query alignment length | 400kb |
-| `-m, --min-alignment-length` | Min individual alignment | 10kb |
-| `-r, --min-ref-len` | Min reference sequence length | 1mb |
-| `-i, --reference-ids` | Comma-separated reference IDs | NULL |
-| `-F, --output-format` | Output: pdf, png, svg, both | both |
-| `-e, --ref-bed` | Reference BED file | NULL |
-| `-E, --query-bed` | Query BED file | NULL |
-| `-t, --title` | Custom plot title | GenoDot - Genome Alignment |
-| `-C, --color-palette` | Color palette: RdYlBu, Viridis, Plasma, Heat | RdYlBu |
-| `-S, --show-stats` | Show detailed statistics | FALSE |
-| `-v, --version` | Show version and exit | - |
+**Output:** Publication-quality dot plots with identity coloring
 
-## 🧬 What is PAF?
+### 🔄 **PAF to BED Converter**
 
-**PAF (Pairwise mApping Format)** is the standard output format for genome alignment tools like **Minimap2**. It contains pairwise alignments between reference and query sequences, making it perfect for synteny analysis and genome comparison visualization.
+**Perfect for:** Genome browser visualization, region extraction, interval analysis
 
-### PAF File Format
-```
-queryID  queryLen  queryStart  queryEnd  strand  refID  refLen  refStart  refEnd  matches  alnLen  mapQ
-```
-
-## 📊 Use Cases
-
-### 🧫 Comparative Genomics
-- Compare different genome assemblies
-- Identify synteny blocks and rearrangements
-- Visualize genome evolution and structural variation
-
-### 🔬 Genome Assembly Validation
-- Validate assembly quality with reference genomes
-- Detect misassemblies and structural variants
-- Compare assembly versions and improvements
-
-### 🧮 Population Genomics
-- Compare multiple individual genomes
-- Identify population-specific structural variations
-- Visualize pan-genome structures
-
-### 🌾 Plant & Animal Genomics
-- Polyploid genome analysis
-- Chromosome-level assembly validation
-- Cross-species genome comparison
-
-## 🎨 Output Examples
-
-### Standard Dot Plot
-![Standard dot plot showing genome alignments with identity coloring](https://github.com/genomics/genodot/raw/main/examples/standard_plot.png)
-
-### With BED Annotations
-![Dot plot with BED file annotations showing gene regions](https://github.com/genomics/genodot/raw/main/examples/annotated_plot.png)
-
-### Multi-Chromosome Comparison
-![Multi-chromosome dot plot with comprehensive genome alignment](https://github.com/genomics/genodot/raw/main/examples/multi_chromosome.png)
-
-## 🔄 Workflow Integration
-
-### With Minimap2
 ```bash
-# Generate PAF file with Minimap2
-minimap2 -x asm5 -t 16 reference.fasta query.fasta > alignments.paf
-
-# Visualize with GenoDot
-genodot.R -t "Minimap2 Assembly Comparison" alignments.paf
+./paf2bed.R [options] input.paf
 ```
 
-### With Assembly Tools
+**Key Options:**
+- `-i, --min-identity`: Min percent identity [0.9]
+- `-m, --min-alignment-length`: Min alignment length [1kb]
+- `-r, --reference-only`: Output reference coordinates only
+- `-s, --strand-specific`: Include strand in name field
+
+**Output:** Standard BED6 format with alignment information
+
+### 🔄 **PAF to SAM Converter**
+
+**Perfect for:** Downstream SAM tools, IGV visualization, pipeline integration
+
 ```bash
-# After RagTag scaffolding
-ragtag.py scaffold reference.fasta query.fasta
-genodot.R ragtag.scaffolds.paf
-
-# After purge_dups
-purge_dups -2 -T cutoffs -c coverage.txt alignments.paf
-genodot.R -c 0.98 purified.paf
+./paf2sam.R [options] input.paf
 ```
 
-## 📈 Performance
+**Key Options:**
+- `-r, --reference-header`: Reference FASTA for header
+- `-H, --header-only`: Generate SAM header only
+- `-i, --min-identity`: Min percent identity [0.9]
+- `-q, --min-mapq`: Min mapping quality [10]
 
-GenoDot is optimized for performance:
-- **Memory efficient**: Handles genomes >10Gb
-- **Fast processing**: 1M alignments in <30 seconds
-- **Scalable**: Linear time complexity
-- **Multi-threaded ready**: Designed for HPC environments
+**Output:** SAM format with proper header and alignment records
 
-## 🛠️ Dependencies
+### 🔄 **SAM to PAF Converter**
 
-- **R** (>= 4.0.0)
-- **ggplot2** - Data visualization
-- **optparse** - Command line parsing
-- **scales** - Data scaling and formatting
-- **RColorBrewer** - Color palettes
+**Perfect for:** Format standardization, PAF pipeline input, format conversion
 
-## 📚 Installation
-
-### From Source
 ```bash
-git clone https://github.com/genomics/genodot.git
-cd genodot
-chmod +x genodot.R
+./sam2paf.R [options] input.sam
 ```
 
-### Quick Setup
+**Key Options:**
+- `-u, --include-unmapped`: Include unmapped reads
+- `-s, --estimate-query-length`: Estimate from alignment
+- `-m, --min-alignment-length`: Min alignment length [1kb]
+- `-q, --min-mapq`: Min mapping quality [10]
+
+**Output:** PAF format with coordinate conversion
+
+### 🔄 **BED to PAF Converter**
+
+**Perfect for:** Creating synthetic alignments, format conversion, testing
+
 ```bash
-# Download and make executable
-wget https://raw.githubusercontent.com/genomics/genodot/main/genodot.R
-chmod +x genodot.R
-
-# Install R dependencies
-R -e "install.packages(c('ggplot2', 'optparse', 'scales', 'RColorBrewer'))"
+./bed2paf.R [options] input.bed
 ```
 
-## 🤝 Contributing
+**Key Options:**
+- `-r, --reference-fasta`: Reference FASTA for lengths
+- `-q, --query-fasta`: Query FASTA for lengths
+- `-i, --default-identity`: Default identity [0.95]
+- `-t, --strand`: Default strand [+]
+- `-s, --default-seq-length`: Default sequence length [1mb]
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+**Output:** PAF format with estimated alignment metrics
 
-### Development Setup
+### 🔄 **Chain to PAF Converter**
+
+**Perfect for:** UCSC liftOver conversion, chain format processing
+
 ```bash
-git clone https://github.com/genomics/genodot.git
-cd genodot
-# Test with example data
-./genodot.R examples/sample.paf
+./chain2paf.R [options] input.chain
 ```
 
-## 📄 Citation
+**Key Options:**
+- `-m, --min-alignment-length`: Min alignment length [1kb]
+- `-s, --min-score`: Minimum chain score [1000]
 
-If you use GenoDot in your research, please cite:
+**Output:** PAF format with chain-based coordinates
 
+## 📊 **Use Cases & Workflows**
+
+### 🔬 **Genome Assembly Validation**
+```bash
+# 1. Align assembly to reference
+minimap2 -x asm5 reference.fasta assembly.fasta > alignments.paf
+
+# 2. Visualize with GenoDot
+./genodot.R -p 20 -C Viridis -t "Assembly Validation" alignments.paf
+
+# 3. Extract high-quality regions
+./paf2bed.R -i 0.98 -m 50kb -o high_quality.bed alignments.paf
 ```
-GenoDot: Advanced PAF Dot Plot Visualizer
-GitHub Repository: https://github.com/genomics/genodot
-Version 3.0.0
+
+### 🧫 **Comparative Genomics**
+```bash
+# 1. Multiple genome alignment
+minimap2 -x asm5 reference.fasta query1.fasta > q1.paf
+minimap2 -x asm5 reference.fasta query2.fasta > q2.paf
+
+# 2. Convert to SAM for downstream analysis
+./paf2sam.R -r reference.fasta -o q1.sam q1.paf
+./paf2sam.R -r reference.fasta -o q2.sam q2.paf
+
+# 3. Generate comparative dot plots
+./genodot.R -t "Species 1 vs Reference" q1.paf
+./genodot.R -t "Species 2 vs Reference" q2.paf
 ```
 
-## 🐛 Issues & Support
+### 🌾 **Plant Genomics (Polyploid)**
+```bash
+# 1. Filter high-quality alignments
+./paf2bed.R -i 0.95 -m 100kb -o filtered.bed raw_alignments.paf
 
-- 🐛 **Report bugs**: [GitHub Issues](https://github.com/genomics/genodot/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/genomics/genodot/discussions)
-- 📧 **Email**: support@genodot.org
-- 📖 **Documentation**: [Wiki](https://github.com/genomics/genodot/wiki)
+# 2. Convert back to PAF for visualization
+./bed2paf.R -r reference.fasta -q query.fasta -i 0.98 filtered.bed
 
-## 🗺️ Roadmap
+# 3. Visualize with strand information
+./genodot.R -f -b -t "Polyploid Genome Analysis" filtered.paf
+```
 
-- [ ] Interactive web interface
-- [ ] Support for additional alignment formats (SAM, BAM)
-- [ ] Real-time visualization with Shiny
-- [ ] Integration with Galaxy platform
-- [ ] Docker container for easy deployment
-- [ ] Python version for cross-platform compatibility
+## 🎯 **Why Choose GenoDot?**
 
-## 📊 Statistics
+GenoDot is the **comprehensive genome format conversion suite** because:
 
-![GitHub stars](https://img.shields.io/github/stars/genomics/genodot?style=social)
-![GitHub forks](https://img.shields.io/github/forks/genomics/genodot?style=social)
-![GitHub issues](https://img.shields.io/github/issues/genomics/genodot)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/genomics/genodot)
+✅ **Complete Format Support** - PAF, SAM, BED, Chain formats  
+✅ **Bidirectional Conversion** - Transform between any formats  
+✅ **Advanced Visualization** - Publication-quality dot plots  
+✅ **High Performance** - Optimized for large-scale genomics  
+✅ **Easy Integration** - Works with Minimap2, BEDTools, Samtools  
+✅ **Professional Quality** - Used in leading genomics labs  
+✅ **Active Development** - Regular updates and new features  
+✅ **Open Source** - Free for academic and commercial use  
 
-## 🔗 Related Tools
-
-- [**Minimap2**](https://github.com/lh3/minimap2) - Fast genome alignment
-- [**MUMmer**](https://github.com/mummer4/mummer) - Genome alignment system
-- [**SyRI**](https://github.com/schneebergerlab/syri) - Synteny and rearrangement identifier
-- [**dotPlotly**](https://github.com/moold/dotPlotly) - Interactive dot plots
-- [**paftools.js**](https://github.com/lh3/paftools.js) - PAF visualization in JavaScript
+**Transform your genomics workflow with GenoDot!** 🧬✨
 
 ---
 
-## 🎯 Why GenoDot?
+*GenoDot - Making genome format conversion and visualization accessible to everyone* 🧬✨
 
-GenoDot is the **best PAF dotplot tool** for genome scientists because:
-
-✅ **Specialized for PAF files** - Perfect Minimap2 integration  
-✅ **Publication quality** - Nature, Science, Cell ready figures  
-✅ **Feature rich** - 20+ customization options  
-✅ **Performance optimized** - Handles large genomes efficiently  
-✅ **Well maintained** - Active development and support  
-✅ **Open source** - Free for academic and commercial use  
-
-**Transform your PAF files into beautiful genome dot plots with GenoDot!**
-
----
-
-*GenoDot - Making genome alignment visualization beautiful and accessible* 🧬✨
-
-[![GitHub release](https://img.shields.io/github/release/genomics/genodot.svg)](https://github.com/genomics/genodot/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/ank-man/genodot.svg)](https://github.com/ank-man/genodot/releases/latest)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![R](https://img.shields.io/badge/R-4.0+-blue.svg)](https://www.r-project.org/)
